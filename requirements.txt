@@ -1,3 +1,4 @@
 bip32utils
-chainside-btcpy-multi
+# chainside-btcpy-multi
+git+git://github.com/ilkericyuz/btcpy.git
 mnemonic

@@ -8,11 +8,11 @@ import bip32utils
 import mnemonic
 import binascii
 
-TESTNETS = ['testnet', 'litecointest', 'dashtest', 'komodotest']
+TESTNETS = ['testnet', 'litecointest', 'dashtest', 'komodotest', 'zcashtest']
 
 language = 'english'
 
-network = input('Network mainnet|dash|litecoin|testnet|dashtest|litecointest|komodo|komodotest? ')
+network = input('Network mainnet|dash|litecoin|testnet|dashtest|litecointest|komodo|komodotest|zcash|zcashtest|neo? ')
 btcpy.setup.setup(network)
 print('[1] Existing mnemonic')
 print('[2] Generate new mnemonic')
