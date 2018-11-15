@@ -1,12 +1,14 @@
 #!/usr/bin/env python3
 
 import btcpy
-from btcpy.structs.hd import ExtendedPrivateKey, PrivateKey
+from btcpy.structs.hd import ExtendedPrivateKey
 from btcpy.structs.script import P2pkhScript, P2shScript, P2wshV0Script
+from btcpy.setup import privatekey_class
 
 import bip32utils
 import mnemonic
 import binascii
+
 
 TESTNETS = ['testnet', 'litecointest', 'dashtest', 'komodotest', 'zcashtest']
 
@@ -19,6 +21,11 @@ print('[2] Generate new mnemonic')
 print('[3] Extended private key')
 print('[4] Hex priv to wif')
 choice = input('? ')
+
+if network == 'neo':
+    curve = 'NIST256p'
+else:
+    curve = 'SECP256k1'
 
 if choice == '1':
     mnemo = input('Mnemonic? ')
@@ -40,7 +47,7 @@ elif choice == '3':
     rootkey = ExtendedPrivateKey.decode(rootkey)
 elif choice == '4':
     priv_hex = input('Priv hex? ')
-    priv = PrivateKey.unhexlify(priv_hex)
+    priv = privatekey_class().unhexlify(priv_hex)
     print('WIF: {}'.format(priv.to_wif()))
     print('Addr: {}'.format(str(priv.pub().to_address())))
     print('Segwit addr: {}'.format(P2shScript(P2wshV0Script(P2pkhScript(priv.pub()))).to_address()))
@@ -59,13 +66,13 @@ while hd_path != '0':
     print('Path segwit address: {}'.format(P2shScript(P2wshV0Script(P2pkhScript(derived.pub().key))).to_address()))
     print('Path wif: {}'.format(derived.key.to_wif()))
 
-    print('Address in index 1: {}'.format(derived.pub().derive('./1').key.to_address()))
-    print('Address in index 100: {}'.format(derived.pub().derive('./100').key.to_address()))
-    print('Address in index 1000: {}'.format(derived.pub().derive('./1000').key.to_address()))
-
-    print('Segwit address in index 1: {}'.format(P2shScript(P2wshV0Script(P2pkhScript(derived.pub().derive('./1').key))).to_address()))
-    print('Segwit address in index 100: {}'.format(P2shScript(P2wshV0Script(P2pkhScript(derived.pub().derive('./100').key))).to_address()))
-    print('Segwit address in index 1000: {}'.format(P2shScript(P2wshV0Script(P2pkhScript(derived.pub().derive('./1000').key))).to_address()))
+    # print('Address in index 1: {}'.format(derived.pub().derive('./1').key.to_address()))
+    # print('Address in index 100: {}'.format(derived.pub().derive('./100').key.to_address()))
+    # print('Address in index 1000: {}'.format(derived.pub().derive('./1000').key.to_address()))
+    #
+    # print('Segwit address in index 1: {}'.format(P2shScript(P2wshV0Script(P2pkhScript(derived.pub().derive('./1').key))).to_address()))
+    # print('Segwit address in index 100: {}'.format(P2shScript(P2wshV0Script(P2pkhScript(derived.pub().derive('./100').key))).to_address()))
+    # print('Segwit address in index 1000: {}'.format(P2shScript(P2wshV0Script(P2pkhScript(derived.pub().derive('./1000').key))).to_address()))
     address_index = input('Address index. "e" to exit? ')
     while address_index != 'e':
         print('Address in index {}: {}'.format(address_index, derived.pub().derive('./' + address_index).key.to_address()))
